@@ -1,9 +1,11 @@
 # docker-irssivpn
 
 ## To Build:
+```
 git clone https://github.com/JonathanShrek/docker-irssivpn.git
 cd docker-irssivpn
 docker build -t jonathanshrek/irssivpn .
+```
 
 ## To Run:
 ```
