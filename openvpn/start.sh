@@ -99,9 +99,9 @@ if [[ $VPN_ENABLED == "yes" ]]; then
 	fi
 	
 	# required for use in iptables
-	if [[ "${VPN_PROTOCOL}" == "tcp-client" ]]; then
-		export VPN_PROTOCOL="tcp"
-	fi
+	#if [[ "${VPN_PROTOCOL}" == "tcp-client" ]]; then
+	#	export VPN_PROTOCOL="tcp"
+	#fi
 	
 	VPN_DEVICE_TYPE=$(cat "${VPN_CONFIG}" | grep -P -o -m 1 '(?<=^dev\s)[^\r\n\d]+' | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
 	if [[ ! -z "${VPN_DEVICE_TYPE}" ]]; then
@@ -110,6 +110,7 @@ if [[ $VPN_ENABLED == "yes" ]]; then
 	else
 		echo "[crit] VPN_DEVICE_TYPE not found in ${VPN_CONFIG}, exiting..." | ts '%Y-%m-%d %H:%M:%.S' && exit 1
 	fi
+
 	# get values from env vars as defined by user
 	export LAN_NETWORK=$(echo "${LAN_NETWORK}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
 	if [[ ! -z "${LAN_NETWORK}" ]]; then
@@ -124,6 +125,7 @@ if [[ $VPN_ENABLED == "yes" ]]; then
 		echo "[warn] NAME_SERVERS not defined (via -e NAME_SERVERS), defaulting to Google and FreeDNS name servers" | ts '%Y-%m-%d %H:%M:%.S'
 		export NAME_SERVERS="8.8.8.8,37.235.1.174,8.8.4.4,37.235.1.177"
 	fi
+
 	export VPN_OPTIONS=$(echo "${VPN_OPTIONS}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
 	if [[ ! -z "${VPN_OPTIONS}" ]]; then
 		echo "[info] VPN_OPTIONS defined as '${VPN_OPTIONS}'" | ts '%Y-%m-%d %H:%M:%.S'
@@ -165,6 +167,8 @@ if [[ $VPN_ENABLED == "yes" ]]; then
 	exec openvpn --config ${VPN_CONFIG} &
 	# give openvpn some time to connect
 	sleep 5
-	#exec /bin/bash /etc/openvpn/openvpn.init start &
+	exec irssi
+else
+	echo "[info] Running irssi without VPN..." | ts '%Y-%m-%d %H:%M:%.S'
 	exec irssi
 fi
