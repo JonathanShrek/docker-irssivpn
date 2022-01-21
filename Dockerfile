@@ -5,8 +5,8 @@
 FROM ubuntu:latest
 MAINTAINER Jonathan Shreckengost
 
-VOLUME /config
-VOLUME /downloads
+VOLUME /openvpn-config
+VOLUME /irssi-config
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -25,6 +25,7 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ADD openvpn/ /etc/openvpn/
+ADD irssi/config/config ~/.irssi/
 
 RUN chmod +x /etc/openvpn/*.sh
 
